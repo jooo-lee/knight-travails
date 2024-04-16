@@ -8,7 +8,7 @@
  * Print path returned from bfs call.
  *
  * Return an array of possible knight moves (unvisited squares) from the given square.
- * function getMoves(square)
+ * function getMoves(square, visitedMatrix)
  * Create array to store moves.
  * Add all possible moves to unvisited squares to array.
  * Return array.
@@ -27,3 +27,24 @@
  *     Enqueue the new path.
  *     Mark the new square as visited.
  */
+
+// Returns an array of possible knight moves to unvisited squares from the given square.
+const getMoves = (start, visitedMatrix) => {
+    const moves = [];
+    moves.push([start[0] - 2, start[1] - 1]);
+    moves.push([start[0] - 2, start[1] + 1]);
+    moves.push([start[0] - 1, start[1] - 2]);
+    moves.push([start[0] - 1, start[1] + 2]);
+    moves.push([start[0] + 1, start[1] - 2]);
+    moves.push([start[0] + 1, start[1] + 2]);
+    moves.push([start[0] + 2, start[1] - 1]);
+    moves.push([start[0] + 2, start[1] + 1]);
+    return moves.filter(
+        (square) =>
+            square[0] >= 0 &&
+            square[0] < 8 &&
+            square[1] >= 0 &&
+            square[1] < 8 &&
+            visitedMatrix[square[0]][square[1]] === 0
+    );
+};
