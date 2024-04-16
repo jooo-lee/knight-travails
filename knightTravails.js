@@ -28,7 +28,7 @@
  *     Mark the new square as visited.
  */
 
-// Returns an array of possible knight moves to unvisited squares from the given square.
+// Returns an array of possible knight moves to unvisited squares from the given square
 const getMoves = (start, visitedMatrix) => {
     const moves = [];
     moves.push([start[0] - 2, start[1] - 1]);
@@ -39,6 +39,8 @@ const getMoves = (start, visitedMatrix) => {
     moves.push([start[0] + 1, start[1] + 2]);
     moves.push([start[0] + 2, start[1] - 1]);
     moves.push([start[0] + 2, start[1] + 1]);
+
+    // Make sure squares are on the board and not unvisited
     return moves.filter(
         (square) =>
             square[0] >= 0 &&
@@ -49,6 +51,7 @@ const getMoves = (start, visitedMatrix) => {
     );
 };
 
+// Returns breadth-first search path from start square to end square
 const bfs = (start, end, visitedMatrix) => {
     // Set up a queue of possible paths
     const paths = [];
@@ -79,4 +82,38 @@ const bfs = (start, end, visitedMatrix) => {
             visitedMatrix[move[0]][move[1]] = 1;
         });
     }
+};
+
+// Shows (one of) the shortest possible ways to get from one square to another using knight moves
+const knightMoves = (start, end) => {
+    if (
+        start[0] < 0 ||
+        start[0] > 7 ||
+        start[1] < 0 ||
+        start[1] > 7 ||
+        end[0] < 0 ||
+        end[0] > 7 ||
+        end[1] < 0 ||
+        end[1] > 7
+    ) {
+        throw new Error('Start or end square out of bounds!');
+    }
+
+    /**
+     * Set up matrix to keep track of which squares have been visited.
+     * 0 means a square hasn't been visited, while 1 means it has.
+     */
+    const visitedMatrix = [];
+    visitedMatrix.length = 8;
+    for (let i = 0; i < visitedMatrix.length; i++) {
+        visitedMatrix[i] = [];
+        visitedMatrix[i].length = 8;
+        visitedMatrix[i].fill(0);
+    }
+
+    // Print the number of moves needed and the full path
+    const shortestPath = bfs(start, end, visitedMatrix);
+    console.log(`You made it in ${shortestPath.length - 1} moves!`);
+    console.log("Here's your path:");
+    console.log(shortestPath);
 };
