@@ -48,3 +48,35 @@ const getMoves = (start, visitedMatrix) => {
             visitedMatrix[square[0]][square[1]] === 0
     );
 };
+
+const bfs = (start, end, visitedMatrix) => {
+    // Set up a queue of possible paths
+    const paths = [];
+
+    // Enqueue the first path
+    paths.push([start]);
+
+    while (paths.length) {
+        // Get the first path in the queue
+        const path = paths.shift();
+
+        // Check if the last square in the path is the end square
+        const lastSquare = path.at(-1);
+        if (lastSquare[0] === end[0] && lastSquare[1] === end[1]) {
+            return path;
+        }
+
+        /**
+         * Iterate over all possible moves to unvisited squares from the last square
+         * in the current path. For each new square, create a new path containing
+         * the current path and the new square, and then add the new path to the queue.
+         * Mark the new square as visited.
+         */
+        const possibleMoves = getMoves(lastSquare, visitedMatrix);
+        possibleMoves.forEach((move) => {
+            const newPath = path.concat([move]);
+            paths.push(newPath);
+            visitedMatrix[move[0]][move[1]] = 1;
+        });
+    }
+};
